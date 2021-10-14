@@ -4,16 +4,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "directories": {
-
     "test": "tests"
   },
-  "devDependencies": {},
-  "dependencies": {
-    "jest": "^27.2.5",
-    "nodemon": "^2.0.13"
-  },
   "scripts": {
-    "start": "npx nodemon",
+    "start": "nodemon server/index.js",
     "test": "jest"
   },
   "repository": {
@@ -25,5 +19,11 @@
   "bugs": {
     "url": "https://github.com/powderpuff-boiz/questions-answers/issues"
   },
-  "homepage": "https://github.com/powderpuff-boiz/questions-answers#readme"
+  "homepage": "https://github.com/powderpuff-boiz/questions-answers#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "jest": "^27.2.5",
+    "nodemon": "^2.0.13"
+  },
+  "devDependencies": {}
 }

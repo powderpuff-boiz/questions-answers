@@ -1,5 +1,6 @@
 const config = require('../config.js');
 const express = require('express');
+const db = require('../database/index.js');
 
 const app = express();
 const port = 3000;

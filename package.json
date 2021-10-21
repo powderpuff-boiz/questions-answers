@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "start": "node --max-old-space-size=8192 server/index.js",
+    "start": "node --max-old-space-size=6144 server/index.js",
     "test": "jest"
   },
   "repository": {
@@ -21,7 +21,6 @@
   },
   "homepage": "https://github.com/powderpuff-boiz/questions-answers#readme",
   "dependencies": {
-    "csvtojson": "^2.0.10",
     "express": "^4.17.1",
     "fast-csv": "^4.3.6",
     "jest": "^27.2.5",

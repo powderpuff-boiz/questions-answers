@@ -26,10 +26,14 @@ const photoSchema = new mongoose.Schema({
   url: { type: String }
 });
 
+const totalQuestions = new mongoose.Schema({
+  id: { type: Number }
+});
+
 module.exports = {
-  Question : mongoose.model('Question', questionSchema),
-  Answer : mongoose.model('Answer', answerSchema),
-  Photo : mongoose.model('Photo', photoSchema)
+  Question : mongoose.model('questions', questionSchema),
+  Answer : mongoose.model('answers', answerSchema),
+  Photo : mongoose.model('photos', photoSchema)
 };
 
 

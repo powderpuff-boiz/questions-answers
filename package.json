@@ -7,8 +7,9 @@
     "test": "tests"
   },
   "scripts": {
-    "start": "node --max-old-space-size=6144 server/index.js",
-    "test": "jest"
+    "start": "node server/index.js",
+    "test": "jest",
+    "lint": "eslint ./"
   },
   "repository": {
     "type": "git",
@@ -28,5 +29,7 @@
     "mongoose": "^6.0.11",
     "nodemon": "^2.0.13"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor"
+  }
 }

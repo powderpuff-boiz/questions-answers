@@ -26,8 +26,8 @@ const photoSchema = new mongoose.Schema({
   url: { type: String }
 });
 
-const totalQuestions = new mongoose.Schema({
-  id: { type: Number }
+const resultsSchema = new mongoose.Schema({
+  type: Array
 });
 
 module.exports = {

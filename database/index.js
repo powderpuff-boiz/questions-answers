@@ -18,17 +18,40 @@ db.on('error', () => {
 });
 db.once('open', () => {
   console.log('DB connection success');
-  //importPhotos();
-  importQuestions();
-  //importAnswers();
+  // importPhotos();
+  //importQuestions();
+  importAnswers();
+  //aggregateQuestions();
 });
+
+// ====== TESTING AGGREGATE ===== //
+
+const aggregateQuestions = () => {
+  const pipeline = [
+    { $match: { 'product_id': 1 } },
+    { $group: { '_id': '$name'} },
+    { $limit: 3 }
+  ];
+  db.collection('questions').aggregate(pipeline).toArray()
+  .then(results => {
+    console.log('CHECKING AGGREGATE RESULTS', results);
+  })
+  .catch(err => {
+    console.log('AGGREGATE FAIL', err);
+  });
+}
+
+// const pipeline = [
+//   { $match: { 'product_id': 1 } },
+//   { $limit: 2 }
+// ];
 
 
 const importPhotos = () => {
-  let stream = fs.createReadStream(photosCSV);
+  let stream = fs.createReadStream(photosCSV, { highWaterMark: 24 });
   let csvData = [];
   let csvStream = fastcsv
-    .parse()
+    .parse({ headers: true })
     .on('data', (data) => {
       csvData.push({
         id: Number(data[0]),
@@ -51,10 +74,10 @@ const importPhotos = () => {
 }
 
 const importAnswers = () => {
-  let stream = fs.createReadStream(answersCSV);
+  let stream = fs.createReadStream(answersCSV, { highWaterMark: 24 });
   let csvData = [];
   let csvStream = fastcsv
-    .parse()
+    .parse({ headers: true, skipRows: 1 })
     .on('data', (data) => {
       csvData.push({
         id: Number(data[0]),
@@ -82,10 +105,10 @@ const importAnswers = () => {
 }
 
 const importQuestions = () => {
-  let stream = fs.createReadStream(questionsCSV);
+  let stream = fs.createReadStream(questionsCSV, { highWaterMark: 24 });
   let csvData = [];
   let csvStream = fastcsv
-    .parse()
+    .parse({ headers: true })
     .on('data', (data) => {
       csvData.push({
         id: Number(data[0]),

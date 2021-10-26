@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="SDC-Q&amp;A" id="Project-16c8" database="PostgreSQL" >
+	<schema name="sdc-q&amp;a" >
+		<table name="answers" prior="tbl" >
+			<column name="answer_id" type="integer" jt="4" mandatory="y" />
+			<column name="question" type="integer" jt="4" mandatory="y" />
+			<column name="body" type="varchar" length="1000" jt="12" mandatory="y" />
+			<column name="answerer_name" type="varchar" length="60" jt="12" mandatory="y" />
+			<column name="helpfulness" type="integer" jt="4" />
+			<column name="photos" type="integer[]" jt="2003" />
+			<index name="pk_answers_answer_id" unique="PRIMARY_KEY" >
+				<column name="answer_id" />
+			</index>
+			<fk name="question" to_schema="sdc-q&amp;a" to_table="questions" >
+				<fk_column name="question" pk="question_id" />
+			</fk>
+		</table>
+		<table name="photos" prior="tbl" >
+			<column name="id" type="integer" jt="4" mandatory="y" />
+			<column name="answer_id" type="integer" jt="4" mandatory="y" />
+			<column name="url" type="path" jt="1111" mandatory="y" />
+			<index name="pk_photos_id" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="answer_id" to_schema="sdc-q&amp;a" to_table="answers" >
+				<fk_column name="answer_id" pk="answer_id" />
+			</fk>
+		</table>
+		<table name="product_id" prior="tbl" >
+			<column name="id" type="integer" jt="4" mandatory="y" />
+			<column name="product_id" type="integer" jt="4" mandatory="y" />
+			<index name="unq_product_id_product_id" unique="UNIQUE_KEY" >
+				<column name="product_id" />
+			</index>
+			<index name="pk_product_id_product_id" unique="PRIMARY_KEY" >
+				<column name="product_id" />
+			</index>
+		</table>
+		<table name="questions" prior="tbl" >
+			<column name="question_id" type="integer" jt="4" mandatory="y" />
+			<column name="product_id" type="integer" jt="4" mandatory="y" />
+			<column name="question_body" type="varchar" length="1000" jt="12" mandatory="y" />
+			<column name="question_date" type="date" jt="91" mandatory="y" >
+				<defo><![CDATA[CURRENT_DATE]]></defo>
+			</column>
+			<column name="asker_name" type="varchar" length="60" jt="12" mandatory="y" />
+			<column name="question_helpfulness" type="integer" jt="4" />
+			<column name="reported" type="boolean" jt="-7" />
+			<column name="answers" type="integer[]" jt="2003" />
+			<index name="pk_questions_question_id" unique="PRIMARY_KEY" >
+				<column name="question_id" />
+			</index>
+			<fk name="product_id" to_schema="sdc-q&amp;a" to_table="product_id" >
+				<fk_column name="product_id" pk="product_id" />
+			</fk>
+		</table>
+	</schema>
+	<layout name="SDC-Q&amp;A schema" id="Layout-1795" show_relation="columns" >
+		<entity schema="sdc-q&amp;a" name="answers" color="C1D8EE" x="432" y="48" />
+		<entity schema="sdc-q&amp;a" name="photos" color="C1D8EE" x="624" y="48" />
+		<entity schema="sdc-q&amp;a" name="product_id" color="C1D8EE" x="48" y="48" />
+		<entity schema="sdc-q&amp;a" name="questions" color="C1D8EE" x="208" y="48" />
+	</layout>
+</project>

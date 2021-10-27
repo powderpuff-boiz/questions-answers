@@ -8,6 +8,7 @@ const q = {
     // sort by question ID
     // limit to page & count
     // look up from answers collections
+    return ('model connection success!');
   },
   post: (params) => {
     // query to post question by product ID

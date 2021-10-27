@@ -1,4 +1,4 @@
-const a = require('../models/ansewrs.js');
+const a = require('../models/answers.js');
 
 const answers = {
   getAnswers: (req, res) => {

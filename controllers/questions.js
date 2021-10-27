@@ -2,11 +2,13 @@ const q = require('../models/questions.js');
 
 const questions = {
   getQuestions: async (req, res) => {
+    console.log('getQuestions', req.body);
     let params = {};
     try {
       let result = await q.get(params);
+      console.log(result);
       res.status(200).send(result);
-    } catch(err) {
+    } catch (err) {
       console.error(err);
       res.sendStatus(400);
     }
@@ -19,11 +21,11 @@ const questions = {
     // res.status(200).send(data);
   },
   postQuestion: async (req, res) => {
-    let params: {};
+    let params = {};
     try {
       let result = await q.post(params);
       res.sendStatus(201);
-    } catch(err) {
+    } catch (err) {
       console.error(err);
       res.sendStatus(400);
     }
@@ -37,7 +39,7 @@ const questions = {
     try {
       let result = await q.helpful(params);
       res.sendStatus(204);
-    } catch(err) {
+    } catch (err) {
       console.error(err);
       res.sendStatus(400);
     }
@@ -51,7 +53,7 @@ const questions = {
     try {
       let result = await q.report(params);
       res.sendStatus(204);
-    } catch(err) {
+    } catch (err) {
       console.error(err);
       res.sendStatus(400);
     }

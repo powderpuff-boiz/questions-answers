@@ -30,14 +30,14 @@ const importAnswers = () => {
     .on('data', (data) => {
       csvStream.pause();
       db.collection('answers').insertOne({
-        id: Number(data['answer_id']),
+        id: Number(data['id']),
         questionId: Number(data['question_id']),
         body: data['body'],
-        date: new Date(data['date']),
-        name: data['name'],
-        email: data['email'],
+        date: new Date(data['date_written']),
+        name: data['answerer_name'],
+        email: data['answerer_email'],
         reported: Number(data['reported']),
-        helpfulness: Number(data['helpfulness']),
+        helpfulness: Number(data['helpful']),
         photos: []
       });
       csvStream.resume();
@@ -47,7 +47,7 @@ const importAnswers = () => {
     });
   stream.pipe(csvStream);
 };
-// importAnswers();
+
 
 // ===== IMPORT PHOTOS ===== //
 const importPhotos = () => {
@@ -60,7 +60,7 @@ const importPhotos = () => {
       db.collection('answers').updateOne(
         { id: Number(data['answer_id']) },
         { $push: { photos: {
-          id: Number(data['photo_id']),
+          id: Number(data['id']),
           answerId: Number(data['answer_id']),
           url: data['url']
         }}});
@@ -71,7 +71,7 @@ const importPhotos = () => {
     });
   stream.pipe(csvStream);
 };
-//importPhotos();
+
 
 // ===== IMPORT QUESTIONS ===== //
 const importQuestions = () => {
@@ -82,14 +82,14 @@ const importQuestions = () => {
     .on('data', (data) => {
       csvStream.pause();
       db.collection('questions').insertOne({
-        id: Number(data['question_id']),
+        id: Number(data['id']),
         productId: Number(data['product_id']),
         body: data['body'],
-        date: new Date(data['date']),
-        name: data['name'],
-        email: data['email'],
+        date: new Date(data['date_written']),
+        name: data['asker_name'],
+        email: data['asker_email'],
         reported: Number(data['reported']),
-        helpfulness: Number(data['helpfulness']),
+        helpfulness: Number(data['helpful']),
         answers: []
       });
       csvStream.resume();
@@ -99,8 +99,9 @@ const importQuestions = () => {
     });
   stream.pipe(csvStream);
 };
+//importPhotos();
+//importAnswers();
 //importQuestions();
-
 
 
 // ===== CREATE RESULTS COLLECTION ===== //

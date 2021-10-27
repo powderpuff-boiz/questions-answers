@@ -39,10 +39,10 @@ const resultsSchema = new mongoose.Schema({
 });
 
 module.exports = {
-  Question: mongoose.model('questions', questionSchema),
-  Answer: mongoose.model('answers', answerSchema),
-  Photo: mongoose.model('photos', photoSchema),
-  Results: mongoose.model('results', resultsSchema)
+  Question: mongoose.model('Question', questionSchema, 'questions'),
+  Answer: mongoose.model('Answer', answerSchema, 'answers'),
+  Photo: mongoose.model('Photo', photoSchema),
+  Results: mongoose.model('Results', resultsSchema)
 };
 
 

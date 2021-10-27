@@ -20,25 +20,8 @@ db.once('open', () => {
   console.log('DB connection success');
 });
 
-// ====== TESTING AGGREGATE ===== //
-
-// const aggregateQuestions = () => {
-//   let pipeline = [
-//     { $match: { 'product_id': 1 } },
-//     { $limit: 2 }
-//   ];
-//   db.collection('questions').aggregate(pipeline).toArray()
-//     .then(results => {
-//       console.log('CHECKING AGGREGATE RESULTS', results);
-//     })
-//     .catch(err => {
-//       console.log('AGGREGATE FAIL', err);
-//     });
-// };
-
 
 // ===== IMPORT ANSWERS ===== //
-
 const importAnswers = () => {
   let stream = fs.createReadStream(answersCSV);
   let csvData = [];
@@ -64,13 +47,9 @@ const importAnswers = () => {
     });
   stream.pipe(csvStream);
 };
-
 // importAnswers();
 
-
-
 // ===== IMPORT PHOTOS ===== //
-
 const importPhotos = () => {
   let stream = fs.createReadStream(photosCSV);
   let csvData = [];
@@ -92,13 +71,9 @@ const importPhotos = () => {
     });
   stream.pipe(csvStream);
 };
-
 //importPhotos();
 
-
-
 // ===== IMPORT QUESTIONS ===== //
-
 const importQuestions = () => {
   let stream = fs.createReadStream(questionsCSV);
   let csvData = [];
@@ -124,9 +99,7 @@ const importQuestions = () => {
     });
   stream.pipe(csvStream);
 };
-
 //importQuestions();
-
 
 
 
@@ -142,81 +115,3 @@ const gatherResults = () => {
   db.collection('results').insertMany();
 };
 
-
-
-// ======= USING CSVTOJSON ======= //
-// const arr = [];
-// csvtojson().fromFile(photosCSV).then(source => {
-//   for (var i = 0; i < source.length; i++) {
-//     let oneRow = {
-//       id: source[i]["id"],
-//       answer_id: source[i]["answer_id"],
-//       url: source[i]["url"]
-//     };
-//     arr.push(oneRow);
-//   }
-
-//   let collection = db.collection('photos');
-//   collection.insertMany(arr, (err, result) => {
-//     if (err) {
-//       console.log('err', err);
-//     } else if (result) {
-//       console.log('Import CSV into DB success');
-//     }
-//   });
-// });
-
-
-// const arr = [];
-// csvtojson().fromFile(answersCSV).then(source => {
-//   for (var i = 0; i < source.length; i++) {
-//     let oneRow = {
-//       id: source[i]["id"],
-//       question_id: source[i]["question_id"],
-//       body: source[i]["body"],
-//       date: source[i]["date_written"],
-//       name: source[i]["answerer_name"],
-//       email: source[i]["answerer_email"],
-//       reported: source[i]["reported"],
-//       helpfulness: (source[i]["helpful"])
-//     };
-//     arr.push(oneRow);
-//   }
-
-//   let collection = db.collection('answers');
-//   collection.insertMany(arr, (err, result) => {
-//     if (err) {
-//       console.log('err', err);
-//     } else if (result) {
-//       console.log('Import CSV into DB success');
-//     }
-//   });
-// });
-
-
-// const arr = [];
-// csvtojson().fromFile(questionsCSV).then(source => {
-//   for (var i = 0; i < source.length; i++) {
-//     let oneRow = {
-//       id: source[i]["id"],
-//       product_id: source[i]["product_id"],
-//       body: source[i]["body"],
-//       date: source[i]["date_written"],
-//       name: source[i]["asker_name"],
-//       email: source[i]["asker_email"],
-//       reported: source[i]["reported"],
-//       helpfulness: source[i]["helpful"]
-//     };
-//     arr.push(oneRow);
-//   }
-//   //console.log('checking for array', arr);
-//   //let collectionName = 'questions';
-//   let collection = db.collection('questions');
-//   collection.insertMany(arr, (err, result) => {
-//     if (err) {
-//       console.log('err')
-//     } else if (result) {
-//       console.log('Import CSV into database successfully');
-//     }
-//   });
-// });

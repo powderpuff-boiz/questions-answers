@@ -9,7 +9,6 @@ const questions = {
     };
     try {
       let result = await q.get(params);
-      //console.log(result);
       res.status(200).send(result);
     } catch (err) {
       console.error(err);
@@ -25,7 +24,6 @@ const questions = {
       email: req.query.email,
       body: parsedBody
     };
-    console.log('controller post question', params);
     try {
       let result = await q.post(params);
       res.sendStatus(201);

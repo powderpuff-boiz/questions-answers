@@ -9,7 +9,6 @@ const answers = {
     };
     try {
       let result = await a.get(params);
-      console.log(result);
       res.status(200).send(result);
     } catch (err) {
       console.error(err);

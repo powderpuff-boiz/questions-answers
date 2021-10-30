@@ -7,9 +7,10 @@
     "test": "tests"
   },
   "scripts": {
-    "start": "node server/index.js",
+    "start": "nodemon server/index.js",
     "test": "jest --testEnvironment=node --runInBand ./tests",
-    "lint": "eslint ./"
+    "lint": "eslint ./",
+    "coverage": "jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -26,7 +27,6 @@
     "fast-csv": "^4.3.6",
     "jest": "^27.3.1",
     "mongodb": "^4.1.2",
-    "mongodb-memory-server": "^7.5.1",
     "mongoose": "^6.0.11",
     "nodemon": "^2.0.13"
   },

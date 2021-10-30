@@ -1,4 +1,5 @@
 const getResults = (results) => {
+  //console.log('test results', results);
   let result = {
     'product_id': results[0]['product_id'].toString(),
     'results': []

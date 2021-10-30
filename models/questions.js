@@ -3,6 +3,7 @@ const { getResults } = require('./helpers.js');
 
 const q = {
   get: async (params) => {
+    //console.log('testing params', params);
     let result = await Question.aggregate()
       .match({ product_id: params.product_id, reported: 0 })
       .project({'_id': 0, 'asker_email': 0})
@@ -20,7 +21,6 @@ const q = {
   },
 
   post: async (params) => {
-    console.log('model post Q params', params);
     await Question.find({}).sort({ question_id: -1 }).limit(1)
       .then((lastQuestion) => {
         let questionId = lastQuestion[0].question_id + 1;

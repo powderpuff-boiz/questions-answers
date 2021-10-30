@@ -12,6 +12,4 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/qa/', router);
 
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+module.exports = app;

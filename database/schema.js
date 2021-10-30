@@ -12,6 +12,7 @@ const answerSchema = new mongoose.Schema({
   body: { type: String, required: true },
   date: { type: String, required: true },
   answerer_name: { type: String, required: true },
+  email: { type: String },
   reported: { type: Boolean },
   helpfulness: { type: Number },
   photos: { type: [photoSchema], maxItems: 5 }
@@ -29,16 +30,11 @@ const questionSchema = new mongoose.Schema({
   answers: { type: [answerSchema] }
 });
 
-const resultsSchema = new mongoose.Schema({
-  product_id: { type: String, required: true, unique: true },
-  results: { type: [questionSchema] }
-});
 
 module.exports = {
   Question: mongoose.model('Question', questionSchema, 'questions'),
   Answer: mongoose.model('Answer', answerSchema, 'answers'),
-  Photo: mongoose.model('Photo', photoSchema),
-  Results: mongoose.model('Results', resultsSchema, 'results')
+  Photo: mongoose.model('Photo', photoSchema)
 };
 
 

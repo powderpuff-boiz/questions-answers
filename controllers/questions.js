@@ -9,15 +9,14 @@ const questions = {
     };
     try {
       let result = await q.get(params);
-      console.log(result);
+      //console.log(result);
       res.status(200).send(result);
     } catch (err) {
       console.error(err);
       res.sendStatus(400);
     }
-    // input: product ID (optional: page(1), & count(5))
-    // output: questions with all answers
   },
+
   postQuestion: async (req, res) => {
     let parsedBody = req.query.body.split('%20').join(' ');
     let params = {
@@ -35,6 +34,7 @@ const questions = {
       res.sendStatus(400);
     }
   },
+
   markHelpful: async (req, res) => {
     let params = req.params.question_id;
     try {
@@ -45,6 +45,7 @@ const questions = {
       res.sendStatus(400);
     }
   },
+
   reportQuestion: async (req, res) => {
     let params = req.params.question_id;
     try {

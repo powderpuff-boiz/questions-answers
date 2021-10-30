@@ -31,6 +31,7 @@
     "nodemon": "^2.0.13"
   },
   "devDependencies": {
-    "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor"
+    "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor",
+    "supertest": "^6.1.6"
   }
 }

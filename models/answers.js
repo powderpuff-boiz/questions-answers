@@ -5,14 +5,16 @@ const a = {
     console.log('model answer get params', params);
     let answersList = await Answer.aggregate()
       .match({ question_id: params.id, reported: 0 })
-      .sort({ answer_id: 1 })
-      .limit(params.page * params.count + params.count);
-      return {
-        question: params.id.toString(),
-        page: params.page,
-        count: params.count,
-        results: answersList
-      };
+      .limit(params.page * params.count + params.count)
+      .project({ '_id': 0, 'question_id': 0, 'email': 0, 'reported': 0, 'photos.answer_id': 0 })
+      .sort({ answer_id: 1 });
+    console.log('answersList', answersList);
+    return {
+      question: params.id.toString(),
+      page: params.page,
+      count: params.count,
+      results: answersList
+    };
   },
 
   post: async (params) => {

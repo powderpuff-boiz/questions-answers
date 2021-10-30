@@ -5,15 +5,17 @@ const q = {
   get: async (params) => {
     let result = await Question.aggregate()
       .match({ product_id: params.product_id, reported: 0 })
-      .sort({ question_id: 1 })
+      .project({'_id': 0, 'asker_email': 0})
       .limit(params.page * params.count + params.count)
       .skip(params.page * params.count)
+      .sort({ question_id: 1 })
       .lookup({
         from: 'answers',
         localField: 'question_id',
         foreignField: 'question_id',
         as: 'answers'
-      });
+      })
+      .project({ 'answers._id': 0, 'answers.question_id': 0, 'answers.email': 0, 'answers.reported': 0 });
     return getResults(result);
   },
 

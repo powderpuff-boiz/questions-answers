@@ -1,28 +1,64 @@
 const { Question, Answer, Photo } = require('../database/schema.js');
 
 const a = {
-  get: (params) => {
-    // query to grab answers for specific question
-    // grab questionID, page, count
-    // match by question ID
-    // sort by id: 1
-    // limit to page and count
+  get: async (params) => {
+    console.log('model answer get params', params);
+    let answersList = await Answer.aggregate()
+      .match({ question_id: params.id, reported: 0 })
+      .sort({ answer_id: 1 })
+      .limit(params.page * params.count + params.count);
+      return {
+        question: params.id.toString(),
+        page: params.page,
+        count: params.count,
+        results: answersList
+      };
   },
-  post: (params) => {
-    // query to create new answer
-    // grab question ID
-    // get answer data and apply answer model
-    // Answer.create(answer data)
+
+  post: async (params) => {
+    await Answer.find({}).sort({ answer_id: -1 }).limit(1)
+      .then((answer) => {
+        let answerId = answer[0].answer_id + 1;
+        let newDate = new Date();
+        let finalDate = newDate.toISOString();
+        console.log(finalDate);
+        return Answer.create({
+          answer_id: answerId,
+          question_id: params.question_id,
+          body: params.body,
+          date: finalDate,
+          answerer_name: params.name,
+          reported: 0,
+          helpfulness: 0,
+          photos: params.photos
+        });
+      })
+      .catch((err) => {
+        console.error('model post answer error', err);
+      });
   },
-  helpful: (params) => {
-    // query to update answer helpfulness
-    // grab answer ID
-    // findOneAndUpdate - helpfulness + 1
+
+  helpful: async (params) => {
+    let answerId = params;
+    await Answer.find({ answer_id: answerId })
+      .then((answer) => {
+        let helpful = answer[0].helpfulness + 1;
+        return Answer.findOneAndUpdate(
+          { answer_id: answerId },
+          { helpfulness: helpful }
+        );
+      })
+      .catch((err) => {
+        console.error('model answer helpful error', err);
+      });
   },
-  report: (params) => {
-    // query to report answer
-    // grab answer ID
-    // findOneAndUpdate - reported = 1
+
+  report: async (params) => {
+    let answerId = params;
+    return await Answer.findOneAndUpdate(
+      { answer_id: answerId },
+      { reported: 1 }
+    );
   }
 };
 

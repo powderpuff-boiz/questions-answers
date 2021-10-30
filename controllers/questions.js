@@ -2,8 +2,11 @@ const q = require('../models/questions.js');
 
 const questions = {
   getQuestions: async (req, res) => {
-    console.log('getQuestions', req.body);
-    let params = {};
+    let params = {
+      product_id: Number(req.query.productId),
+      page: req.query.page !== undefined ? Number(req.query.page) : 1,
+      count: req.query.count !== undefined ? Number(req.query.count) : 5
+    };
     try {
       let result = await q.get(params);
       console.log(result);
@@ -12,16 +15,18 @@ const questions = {
       console.error(err);
       res.sendStatus(400);
     }
-
-    //console.log('+++++++++++getQuestions reached!', req.params);
-    // res.send('controller connected');
     // input: product ID (optional: page(1), & count(5))
     // output: questions with all answers
-    // invoke q.get
-    // res.status(200).send(data);
   },
   postQuestion: async (req, res) => {
-    let params = {};
+    let parsedBody = req.query.body.split('%20').join(' ');
+    let params = {
+      product_id: Number(req.query.product_id),
+      name: req.query.name,
+      email: req.query.email,
+      body: parsedBody
+    };
+    console.log('controller post question', params);
     try {
       let result = await q.post(params);
       res.sendStatus(201);
@@ -29,13 +34,9 @@ const questions = {
       console.error(err);
       res.sendStatus(400);
     }
-    // input: product ID (others: body, name, email)
-    // output: adds a question for given product - 201 CREATED
-    // invoke q.post
-    // res.sendStatus(201);
   },
   markHelpful: async (req, res) => {
-    let params = {};
+    let params = req.params.question_id;
     try {
       let result = await q.helpful(params);
       res.sendStatus(204);
@@ -43,13 +44,9 @@ const questions = {
       console.error(err);
       res.sendStatus(400);
     }
-    // input: question ID
-    // output: updates question to show it was helpful - 204 NO CONTENT
-    // invoke q.helpful
-    // res.sendStatus(204);
   },
   reportQuestion: async (req, res) => {
-    let params = {};
+    let params = req.params.question_id;
     try {
       let result = await q.report(params);
       res.sendStatus(204);
@@ -57,10 +54,6 @@ const questions = {
       console.error(err);
       res.sendStatus(400);
     }
-    // input: question ID
-    // output: updates question to show it was reported - 204 NO CONTENT
-    // invoke q.report
-    // res.sendStatus(204);
   }
 };
 

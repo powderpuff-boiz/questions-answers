@@ -1,29 +1,61 @@
 const a = require('../models/answers.js');
 
 const answers = {
-  getAnswers: (req, res) => {
-    // input: question ID (optional: page(1) & count(5))
-    // output: answers for given question
-    // invoke a.get
-    // res.status(200).send(data);
+  getAnswers: async (req, res) => {
+    let params = {
+      id: Number(req.params.question_id),
+      page: req.query.page !== undefined ? Number(req.query.page) : 1,
+      count: req.query.count !== undefined ? Number(req.query.count) : 5
+    };
+    try {
+      let result = await a.get(params);
+      console.log(result);
+      res.status(200).send(result);
+    } catch (err) {
+      console.error(err);
+      res.sendStatus(400);
+    }
   },
-  postAnswer: (req, res) => {
-    // input: question ID (others: body, name, email, photos)
-    // output: adds answer for given question - 201 CREATED
-    // invoke a.post
-    // res.sendStatus(201);
+
+  postAnswer: async (req, res) => {
+    let questionId = Number(req.params.question_id);
+    let photosArr = req.query.photos !== '' ? req.query.photos : [];
+    let params = {
+      question_id: questionId,
+      body: req.query.body,
+      name: req.query.name,
+      email: req.query.email,
+      photos: photosArr
+    };
+    try {
+      let result = await a.post(params);
+      res.sendStatus(201);
+    } catch (err) {
+      console.error(err);
+      res.sendStatus(400);
+    }
   },
-  markHelpful: (req, res) => {
-    // input: answer ID
-    // output: updates answer to show it was helpful - 204 NO CONTENT
-    // invoke a.helpful
-    // res.sendStatus(204);
+
+  markHelpful: async (req, res) => {
+    let params = Number(req.params.answer_id);
+    try {
+      let result = await a.helpful(params);
+      res.sendStatus(204);
+    } catch (err) {
+      console.error(err);
+      res.sendStatus(400);
+    }
   },
-  reportAnswer: (req, res) => {
-    // input: answer ID
-    // output: updates answer to show it was reported - 204 NO CONTENT
-    // invoke a.report
-    // res.sendStatus(204);
+
+  reportAnswer: async (req, res) => {
+    let params = Number(req.params.answer_id);
+    try {
+      let result = await a.report(params);
+      res.sendStatus(204);
+    } catch (err) {
+      console.error(err);
+      res.sendStatus(400);
+    }
   }
 };
 

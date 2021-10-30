@@ -1,29 +1,65 @@
 const { Question, Answer, Photo } = require('../database/schema.js');
+const { getResults } = require('./helpers.js');
 
 const q = {
-  get: (params) => {
-    // query to grab questions by product ID
-    // aggregate pipeline should be here
-    // match by product ID
-    // sort by question ID
-    // limit to page & count
-    // look up from answers collections
-    return ('model connection success!');
+  get: async (params) => {
+    let result = await Question.aggregate()
+      .match({ product_id: params.product_id, reported: 0 })
+      .sort({ question_id: 1 })
+      .limit(params.page * params.count + params.count)
+      .skip(params.page * params.count)
+      .lookup({
+        from: 'answers',
+        localField: 'question_id',
+        foreignField: 'question_id',
+        as: 'answers'
+      });
+    return getResults(result);
   },
-  post: (params) => {
-    // query to post question by product ID
-    // grab all data and apply question model
-    // Question.create(all the input data)
+
+  post: async (params) => {
+    console.log('model post Q params', params);
+    await Question.find({}).sort({ question_id: -1 }).limit(1)
+      .then((lastQuestion) => {
+        let questionId = lastQuestion[0].question_id + 1;
+        return Question.create({
+          question_id: questionId,
+          product_id: params.product_id,
+          question_body: params.body,
+          question_date: new Date(),
+          asker_name: params.name,
+          asker_email: params.email,
+          question_helpfulness: 0,
+          reported: 0,
+          answers: []
+        });
+      })
+      .catch((err) => {
+        console.error('model post question error', err);
+      });
   },
-  helpful: (params) => {
-    // query to update question helpfulness
-    // grab question ID
-    // findOneAndUpdate - helpfulness + 1
+
+  helpful: async (params) => {
+    let questionId = Number(params);
+    await Question.find({ question_id: questionId }).limit(1)
+      .then((question) => {
+        let helpful = question[0].question_helpfulness + 1;
+        return Question.findOneAndUpdate(
+          { question_id: questionId },
+          { question_helpfulness: helpful }
+        );
+      })
+      .catch((err) => {
+        console.error('model question helpful error', err);
+      });
   },
-  report: (params) => {
-    // query to report question
-    // grab question ID
-    // findOneAndUpdate - reported = 1
+
+  report: async (params) => {
+    let questionId = Number(params);
+    return await Question.findOneAndUpdate(
+      { question_id: questionId },
+      { reported: 1 }
+    );
   }
 };
 

@@ -23,63 +23,6 @@ const q = {
       });
     return getResults(result);
 
-    // let questionsList = [];
-    // let answersList = [];
-
-    // Question.find({ product_id: params.product_id }).limit(params.page * params.count)
-    //   .then((questions) => {
-    //     questions.forEach(question => {
-    //       const qObj = {
-    //         question_id: question.question_id,
-    //         question_body: question.question_body,
-    //         question_date: question.question_date,
-    //         asker_name: question.asker_name,
-    //         question_helpfulness: question.question_helpfulness,
-    //         reported: Boolean(question.reported),
-    //         answers: {}
-    //       };
-    //       questionsList.push(qObj);
-    //       //console.log('MODEL QUESTIONS', questionsList);
-    //       questionsList.forEach(async (q) => {
-    //         await Answer.find({ question_id: q.question_id })
-    //           .then((a) => {
-    //             let
-    //             answersList.push(a[0]);
-    //             console.log('MODEL ANSWERS', answersList);
-    //           })
-    //           .catch((err) => {
-    //             console.error(err);
-    //           })
-    //       });
-    //     })
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //   });
-
-
-    // Question.find({ product_id: params.product_id }).limit(params.page * params.count)
-    //   .then(async (questions) => {
-    //     // questionsList = questions;
-    //     questionList = await formatQuestions(questionsList);
-    //     console.log('QUESTIONS LIST', questionsList);
-    //     let answers = questions.forEach((q) => {
-    //       Answer.find({ question_id: q.question_id })
-    //         .then((answers) => {
-    //           answers.forEach(a => {
-    //             answersList.push(a);
-    //           });
-    //           // console.log('ANSWERS LIST', answersList);
-    //           return updateResults(questionsList, answersList);
-    //         })
-    //         .catch((err) => {
-    //           console.log(err);
-    //         });
-    //       });
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
   },
 
   post: async (params) => {

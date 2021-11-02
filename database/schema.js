@@ -30,10 +30,9 @@ const questionSchema = new mongoose.Schema({
   answers: { type: [answerSchema] }
 });
 
-
 module.exports = {
-  Question: mongoose.model('Question', questionSchema, 'questions'),
-  Answer: mongoose.model('Answer', answerSchema, 'answers'),
+  Question: mongoose.model('Question', questionSchema),
+  Answer: mongoose.model('Answer', answerSchema),
   Photo: mongoose.model('Photo', photoSchema)
 };
 

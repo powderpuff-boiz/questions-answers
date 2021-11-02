@@ -4,9 +4,8 @@ const a = {
   get: async (params) => {
     let answersList = await Answer.aggregate()
       .match({ question_id: params.id, reported: 0 })
-      .limit(params.page * params.count + params.count)
-      .project({ '_id': 0, 'question_id': 0, 'email': 0, 'reported': 0, 'photos.answer_id': 0 })
-      .sort({ answer_id: 1 });
+      .limit(params.page * params.count)
+      .project({ '_id': 0, 'question_id': 0, 'email': 0, 'reported': 0, 'photos.answer_id': 0 });
     return {
       question: params.id.toString(),
       page: params.page,

@@ -2,13 +2,15 @@ const q = require('../models/questions.js');
 
 const questions = {
   getQuestions: async (req, res) => {
+    console.log('controller query', req.query);
     let params = {
-      product_id: Number(req.query.productId),
+      product_id: Number(req.query.product_id),
       page: req.query.page !== undefined ? Number(req.query.page) : 1,
       count: req.query.count !== undefined ? Number(req.query.count) : 5
     };
     try {
       let result = await q.get(params);
+      //console.log('SERVER RESULTS', result);
       res.status(200).send(result);
     } catch (err) {
       console.error(err);

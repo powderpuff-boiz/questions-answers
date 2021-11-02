@@ -1,15 +1,24 @@
 const config = require('../config.js');
 const express = require('express');
 const router = require('./router.js');
+const path = require('path');
 const db = require('../database/index.js');
 
 const app = express();
-const port = 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// serve up client files here
+app.use(express.static(path.join(__dirname, '../atelier/client/dist')));
 
-app.use('/qa/', router);
+app.use('/api/qa/', router);
 
+// COMMENT OUT when testing === uncomment server.js //
+const port = 3003;
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+// ==================== //
 
 module.exports = app;

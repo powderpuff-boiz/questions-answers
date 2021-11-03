@@ -48,17 +48,24 @@ const q = {
 
   helpful: async (params) => {
     let questionId = Number(params);
-    await Question.find({ question_id: questionId }).limit(1)
-      .then((question) => {
-        let helpful = question[0].question_helpfulness + 1;
-        return Question.findOneAndUpdate(
-          { question_id: questionId },
-          { question_helpfulness: helpful }
-        );
-      })
-      .catch((err) => {
-        console.error('model question helpful error', err);
-      });
+    await Question.findOneAndUpdate({ question_id: questionId }, { $inc: {question_helpfulness: 1} })
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      return err;
+    });
+    // await Question.findOne({ question_id: questionId }).limit(1)
+    //   .then((question) => {
+    //     let helpful = question[0].question_helpfulness + 1;
+    //     return Question.findOneAndUpdate(
+    //       { question_id: questionId },
+    //       { question_helpfulness: helpful }
+    //     );
+    //   })
+    //   .catch((err) => {
+    //     console.error('model question helpful error', err);
+    //   });
   },
 
   report: async (params) => {

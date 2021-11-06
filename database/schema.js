@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const photoSchema = new mongoose.Schema({
-  id: { type: Number, unique: true, required: true },
+  id: { type: Number, unique: true, sparse: true },
   answer_id: { type: Number, required: true },
   url: { type: String, required: true }
 });

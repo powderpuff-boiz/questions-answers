@@ -29,7 +29,13 @@ const a = {
           reported: 0,
           helpfulness: 0,
           photos: params.photos
-        });
+        })
+          .then((res) => {
+            return res;
+          })
+          .catch((err) => {
+            console.log('Error creating answer');
+          });
       })
       .catch((err) => {
         console.error('model post answer error', err);
@@ -38,25 +44,24 @@ const a = {
 
   helpful: async (params) => {
     let answerId = params;
-    await Answer.find({ answer_id: answerId })
-      .then((answer) => {
-        let helpful = answer[0].helpfulness + 1;
-        return Answer.findOneAndUpdate(
-          { answer_id: answerId },
-          { helpfulness: helpful }
-        );
+    await Answer.findOneAndUpdate({ answer_id: answerId }, { $inc: {helpfulness: 1} })
+      .then((res) => {
+        return res;
       })
       .catch((err) => {
-        console.error('model answer helpful error', err);
+        console.error(err);
       });
   },
 
   report: async (params) => {
     let answerId = params;
-    return await Answer.findOneAndUpdate(
-      { answer_id: answerId },
-      { reported: 1 }
-    );
+    await Answer.findOneAndUpdate({ answer_id: answerId }, { reported: 1 })
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
 };
 

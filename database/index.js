@@ -39,7 +39,11 @@ const importAnswers = () => {
           helpfulness: Number(data['helpful']),
           reported: Number(data['reported']),
           photos: []
-        });
+        })
+          .then(res => res)
+          .catch(err => {
+            console.log('Error importing data into answers', err)
+          });
       // Answer.create({
       //   answer_id: Number(data['id']),
       //   question_id: Number(data['question_id']),
@@ -111,7 +115,11 @@ const importQuestions = () => {
         question_helpfulness: Number(data['helpful']),
         reported: Number(data['reported']),
         answers: []
-      });
+      })
+        .then(res => res)
+        .catch((err) => {
+          console.log("Error inserting data into questions", err);
+        });
       // Question.create({
       //   question_id: Number(data['id']),
       //   product_id: Number(data['product_id']),
@@ -130,39 +138,6 @@ const importQuestions = () => {
     });
   stream.pipe(csvStream);
 };
-
-
-
-
-// ===== RESULTS COLLECTION ===== //
-const combineResults = async () => {
-  let pipeline = [
-    { $match: { question_id: { $gte: 2201, $lte: 2500 }, reported: 0 } },
-    { $lookup: {
-      from: 'answers',
-      localField: 'question_id',
-      foreignField: 'question_id',
-      as: 'answers'
-    }}
-  ];
-
-  Question.aggregate(pipeline).exec((err, data) => {
-    if (err) {
-      console.log('combine results error', err);
-    } else {
-      console.log('INSERTING NOW');
-      return db.collection('results').insertMany(data)
-        .then((res) => {
-          console.log('INSERTION DONE');
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    }
-  });
-};
-
-//combineResults();
 
 
 

@@ -8,8 +8,8 @@ const answers = {
       count: req.query.count !== undefined ? Number(req.query.count) : 5
     };
     try {
-      let result = await a.get(params);
-      res.status(200).send(result);
+      let answersList = await a.get(params);
+      res.status(200).send(answersList);
     } catch (err) {
       console.error(err);
       res.sendStatus(400);
@@ -18,12 +18,12 @@ const answers = {
 
   postAnswer: async (req, res) => {
     let questionId = Number(req.params.question_id);
-    let photosArr = req.query.photos !== '' ? req.query.photos : [];
+    let photosArr = req.body.photos !== '' ? req.query.photos : [];
     let params = {
       question_id: questionId,
-      body: req.query.body,
-      name: req.query.name,
-      email: req.query.email,
+      body: req.body.body,
+      name: req.body.name,
+      email: req.body.email,
       photos: photosArr
     };
     try {

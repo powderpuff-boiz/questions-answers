@@ -1,4 +1,5 @@
 const { Question, Answer, Photo } = require('../database/schema.js');
+const { nextId } = require('../database/index.js');
 
 const a = {
   get: async (params) => {
@@ -28,17 +29,50 @@ const a = {
           answerer_name: params.name,
           reported: 0,
           helpfulness: 0,
-          photos: params.photos
+          photos: []
         })
           .then((res) => {
-            return res;
+            if (params.photos.length > 0) {
+              let photos = params.photos;
+              let photoDocs = [];
+              photos.map((pic) => {
+                nextId('id')
+                  .then(newId => {
+                    console.log('NEW ID', newId);
+                    let newDoc = {
+                      id: newId,
+                      answer_id: res.answer_id,
+                      url: pic
+                    };
+                    photoDocs.push(newDoc);
+                    Answer.updateOne(
+                      { answer_id: res.answer_id },
+                      { $push: { photos: { $each: photoDocs } } }
+                    )
+                      .then(result => {
+                        return result;
+                      })
+                      .catch(err => {
+                        console.log('Error updating answer', err);
+                        return err;
+                      });
+                  })
+                  .catch(err => {
+                    console.log('Error getting new ID');
+                  });
+              });
+            } else {
+              console.log('FINAL ANSWER', res);
+              return res;
+            }
           })
           .catch((err) => {
-            console.log('Error creating answer');
+            console.log('Error retrieving photo', err);
           });
       })
       .catch((err) => {
-        console.error('model post answer error', err);
+        console.log('Error creating answer', err);
+        return err;
       });
   },
 
@@ -50,6 +84,7 @@ const a = {
       })
       .catch((err) => {
         console.error(err);
+        return err;
       });
   },
 
@@ -61,6 +96,7 @@ const a = {
       })
       .catch((err) => {
         console.error(err);
+        return err;
       });
   }
 };

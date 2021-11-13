@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 
 const photoSchema = new mongoose.Schema({
-  id: { type: Number, unique: true, sparse: true },
-  answer_id: { type: Number, required: true },
-  url: { type: String, required: true }
+  id: { type: Number, unique: true, index: true, sparse: true },
+  answer_id: { type: Number, index: true },
+  url: { type: String }
 });
 
 const answerSchema = new mongoose.Schema({
   answer_id: { type: Number, unique: true, required: true },
-  question_id: { type: Number, required: true },
+  question_id: { type: Number, index: true, required: true },
   body: { type: String, required: true },
   date: { type: String, required: true },
   answerer_name: { type: String, required: true },
@@ -20,7 +20,7 @@ const answerSchema = new mongoose.Schema({
 
 const questionSchema = new mongoose.Schema({
   question_id: { type: Number, unique: true, required: true },
-  product_id: { type: Number, required: true },
+  product_id: { type: Number, index: true, required: true },
   question_body: { type: String, required: true, maxLength: 1000 },
   question_date: { type: String, required: true },
   asker_name: { type: String, required: true },

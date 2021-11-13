@@ -5,7 +5,7 @@ const { getResults } = require('./helpers.js');
 
 const questions = {
   getQuestions: async (req, res) => {
-    //console.log('CONTROLLER QUERY', req.query);
+    // console.log('CONTROLLER QUERY', req.query);
     let params = {
       product_id: Number(req.query.product_id),
       page: req.query.page !== undefined ? Number(req.query.page) : 1,

@@ -4,11 +4,13 @@ const fs = require('fs');
 const path = require('path');
 const fastcsv = require('fast-csv');
 const { Question, Answer, Photo } = require('./schema.js');
+require('dotenv').config();
 const questionsCSV = '/Users/michellekim/rpp30/questions-answers/database/questions.csv';
 const answersCSV = '/Users/michellekim/rpp30/questions-answers/database/answers.csv';
 const photosCSV = '/Users/michellekim/rpp30/questions-answers/database/answers_photos.csv';
 
-mongoose.connect('mongodb://localhost/QnA', {useNewUrlParser: true, useUnifiedTopology: true});
+//mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb://localhost:27017/QnA', {useNewUrlParser: true, useUnifiedTopology: true});
 
 const db = mongoose.connection;
 
@@ -58,7 +60,8 @@ const importAnswers = () => {
       csvStream.resume();
     })
     .on('end', () => {
-      console.log('stream is done');
+      //db.collection('answers').createIndex({ question_id: 1 });
+      console.log('Finished importing answers');
     });
   stream.pipe(csvStream);
 };
@@ -79,7 +82,6 @@ const importPhotos = () => {
           answer_id: Number(data['answer_id']),
           url: data['url']
         }}});
-
       // Answer.updateOne({ answer_id: Number(data['answer_id']) },
       //   { $push: { photos: {
       //     id: Number(data['id']),
@@ -90,7 +92,8 @@ const importPhotos = () => {
       csvStream.resume();
     })
     .on('end', () => {
-      console.log('stream is done');
+
+      console.log('Finished importing photos');
     });
   stream.pipe(csvStream);
 };
@@ -134,11 +137,21 @@ const importQuestions = () => {
       csvStream.resume();
     })
     .on('end', () => {
-      console.log('stream is done');
+      //db.collection('questions').createIndex({ product_id: 1 });
+      console.log('Finished importing questions');
     });
   stream.pipe(csvStream);
 };
 
+
+const nextId = async (id) => {
+  let sequence = await db.collection('photoCounter').findOneAndUpdate(
+    { _id: id },
+    { $inc: { value: 1 } },
+    { returnDocument: 'after' }
+  );
+  return sequence.value.value;
+};
 
 
 // ====== INVOKE IMPORT FUNCTIONS ====== //
@@ -151,7 +164,7 @@ const importQuestions = () => {
 
 // ====== IMPORT TIME: MONGODB VS MONGOOSE ====== //
 /* Answers:
- *   MongoDB:
+ *   MongoDB: 17 minutes
  *   Mongoose:
  *
  * Photos:
@@ -168,7 +181,8 @@ const importQuestions = () => {
 module.exports = {
   importQ: importQuestions,
   importA: importAnswers,
-  importP: importPhotos
+  importP: importPhotos,
+  nextId: nextId
 };
 
 

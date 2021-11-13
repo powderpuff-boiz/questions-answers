@@ -2,5 +2,6 @@ node_modules/
 coverage
 config.js
 *.csv
-atelier/
 extra.js
+.env
+atelier/

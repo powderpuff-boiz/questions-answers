@@ -29,10 +29,12 @@ const q = {
           })
           .catch(err => {
             console.log('Error creating question', err);
+            return err;
           });
       })
       .catch((err) => {
         console.error('model post question error', err);
+        return err;
       });
   },
 
@@ -44,6 +46,7 @@ const q = {
       })
       .catch((err) => {
         console.error(err);
+        return err;
       });
   },
 
@@ -55,6 +58,7 @@ const q = {
       })
       .catch((err) => {
         console.error(err);
+        return err;
       });
   }
 };

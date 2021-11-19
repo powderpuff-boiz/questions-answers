@@ -61,8 +61,7 @@ const a = {
                     console.log('Error getting new ID');
                   });
               });
-            } else {
-              console.log('FINAL ANSWER', res);
+            } else if (params.photos.length === undefined) {
               return res;
             }
           })

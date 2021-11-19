@@ -17,7 +17,6 @@ const answers = {
   },
 
   postAnswer: async (req, res) => {
-    console.log('CONTROLLER ', req.body);
     let questionId = Number(req.params.question_id);
     let photosArr = req.body.photos !== '' ? req.body.photos : [];
     let params = {

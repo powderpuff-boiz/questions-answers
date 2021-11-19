@@ -9,13 +9,13 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // serve up client files here
-app.use(express.static(path.join(__dirname, '../atelier/client/dist')));
+// app.use(express.static(path.join(__dirname, '../atelier/client/dist')));
 
 app.use('/api/qa/', router);
 
 // COMMENT OUT when testing === uncomment server.js //
 const port = 3003;
-app.get('/loaderio-aabe190c09dbd0dc4328590803d1ec44/', (req, res) => {
+app.get('/loaderio-6274035a7abdc953438dc44e5fe63e45/', (req, res) => {
   res.sendFile(path.join(__dirname, 'loader.txt'));
 });
 

@@ -5,7 +5,6 @@ const { getResults } = require('./helpers.js');
 
 const questions = {
   getQuestions: async (req, res) => {
-    // console.log('CONTROLLER QUERY', req.query);
     let params = {
       product_id: Number(req.query.product_id),
       page: req.query.page !== undefined ? Number(req.query.page) : 1,
@@ -13,19 +12,24 @@ const questions = {
     };
     try {
       let quests = await q.get(params); // returns array of question docs
-      let pending = []; // to store pending answer promises
-      quests.forEach(q => {
-        let answer = Answer.aggregate().match({ question_id: q.question_id, reported: 0 }).exec();
-        pending.push(answer);
-      });
-      Promise.all(pending)
-        .then((answers) => {
-          let result = getResults(quests, answers);
-          res.status(200).send(result);
-        })
-        .catch((err) => {
-          console.error(err);
+      if (quests.length === 0 ) {
+        res.status(200).send(quests)
+      } else {
+        let pending = []; // to store pending answer promises
+        quests.forEach(q => {
+          let answer = Answer.aggregate().match({ question_id: q.question_id, reported: 0 }).exec();
+          pending.push(answer);
         });
+        Promise.all(pending)
+          .then((answers) => {
+            let result = getResults(quests, answers);
+            res.status(200).send(result);
+          })
+          .catch((err) => {
+            console.error(err);
+            res.sendStatus(400);
+          });
+      }
     } catch (err) {
       console.error(err);
       res.sendStatus(400);
@@ -41,7 +45,6 @@ const questions = {
     };
     try {
       let result = await q.post(params);
-      console.log('Question created');
       res.sendStatus(201);
     } catch (err) {
       console.error(err);

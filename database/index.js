@@ -10,7 +10,8 @@ const answersCSV = '/Users/michellekim/rpp30/questions-answers/database/answers.
 const photosCSV = '/Users/michellekim/rpp30/questions-answers/database/answers_photos.csv';
 
 //mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true});
-mongoose.connect('mongodb://localhost:27017/QnA', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(process.env.REMOTE_MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true});
+// mongoose.connect('mongodb://localhost/QnA', {useNewUrlParser: true, useUnifiedTopology: true});
 
 const db = mongoose.connection;
 
@@ -146,7 +147,7 @@ const importQuestions = () => {
 
 const nextId = async (id) => {
   let sequence = await db.collection('photoCounter').findOneAndUpdate(
-    { _id: id },
+    { _id: 'id' },
     { $inc: { value: 1 } },
     { returnDocument: 'after' }
   );

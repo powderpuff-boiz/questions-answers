@@ -61,7 +61,7 @@ const a = {
                     console.log('Error getting new ID');
                   });
               });
-            } else if (params.photos.length === undefined) {
+            } else if (params.photos === undefined) {
               return res;
             }
           })

@@ -2,7 +2,6 @@ const { Question, Answer, Photo } = require('../database/schema.js');
 
 const q = {
   get: async (params) => {
-    console.log('testing params', params);
     let result = await Question.aggregate()
       .match({ product_id: params.product_id, reported: 0 })
       .limit(params.page * params.count);

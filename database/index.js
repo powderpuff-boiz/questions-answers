@@ -10,7 +10,7 @@ const answersCSV = '/Users/michellekim/rpp30/questions-answers/database/answers.
 const photosCSV = '/Users/michellekim/rpp30/questions-answers/database/answers_photos.csv';
 
 //mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true});
-mongoose.connect(process.env.REMOTE_MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb://mkim:HRadmin@ec2-3-84-180-117.compute-1.amazonaws.com/QnA?authSource=admin', {useNewUrlParser: true, useUnifiedTopology: true});
 // mongoose.connect('mongodb://localhost/QnA', {useNewUrlParser: true, useUnifiedTopology: true});
 
 const db = mongoose.connection;

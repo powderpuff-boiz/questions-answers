@@ -1,4 +1,5 @@
 const { Question, Answer, Photo } = require('../database/schema.js');
+const { nextId } = require('../database/index.js');
 
 const q = {
   get: async (params) => {
@@ -9,9 +10,8 @@ const q = {
   },
 
   post: async (params) => {
-    await Question.find({}).sort({ question_id: -1 }).limit(1)
-      .then((lastQuestion) => {
-        let questionId = lastQuestion[0].question_id + 1;
+    await nextId('question')
+      .then((questionId) => {
         return Question.create({
           question_id: questionId,
           product_id: params.product_id,
@@ -44,7 +44,6 @@ const q = {
         return res;
       })
       .catch((err) => {
-        console.error(err);
         return err;
       });
   },
@@ -56,7 +55,6 @@ const q = {
         return res;
       })
       .catch((err) => {
-        console.error(err);
         return err;
       });
   }

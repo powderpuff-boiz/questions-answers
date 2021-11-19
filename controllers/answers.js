@@ -11,7 +11,6 @@ const answers = {
       let answersList = await a.get(params);
       res.status(200).send(answersList);
     } catch (err) {
-      console.error(err);
       res.sendStatus(400);
     }
   },
@@ -30,7 +29,6 @@ const answers = {
       let result = await a.post(params);
       res.sendStatus(201);
     } catch (err) {
-      console.error(err);
       res.sendStatus(400);
     }
   },

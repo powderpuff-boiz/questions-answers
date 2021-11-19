@@ -16,9 +16,8 @@ const a = {
   },
 
   post: async (params) => {
-    await Answer.find({}).sort({ answer_id: -1 }).limit(1)
-      .then((answer) => {
-        let answerId = answer[0].answer_id + 1;
+    await nextId('answer')
+      .then((answerId) => {
         let newDate = new Date();
         let finalDate = newDate.toISOString();
         return Answer.create({
@@ -32,13 +31,14 @@ const a = {
           photos: []
         })
           .then((res) => {
-            if (params.photos.length > 0) {
+            if (params.photos === undefined) {
+              return res;
+            } else if (params.photos.length > 0) {
               let photos = params.photos;
               let photoDocs = [];
               photos.map((pic) => {
-                nextId('id')
+                nextId('photo')
                   .then(newId => {
-                    console.log('NEW ID', newId);
                     let newDoc = {
                       id: newId,
                       answer_id: res.answer_id,
@@ -61,8 +61,6 @@ const a = {
                     console.log('Error getting new ID');
                   });
               });
-            } else if (params.photos === undefined) {
-              return res;
             }
           })
           .catch((err) => {
@@ -82,7 +80,6 @@ const a = {
         return res;
       })
       .catch((err) => {
-        console.error(err);
         return err;
       });
   },
@@ -94,7 +91,6 @@ const a = {
         return res;
       })
       .catch((err) => {
-        console.error(err);
         return err;
       });
   }

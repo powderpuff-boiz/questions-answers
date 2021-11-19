@@ -7,6 +7,7 @@ const answers = {
       page: req.query.page !== undefined ? Number(req.query.page) : 1,
       count: req.query.count !== undefined ? Number(req.query.count) : 5
     };
+    console.log('PARAMS', params);
     try {
       let answersList = await a.get(params);
       res.status(200).send(answersList);

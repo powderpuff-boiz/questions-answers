@@ -13,7 +13,7 @@ const questions = {
     try {
       let quests = await q.get(params); // returns array of question docs
       if (quests.length === 0 ) {
-        res.status(200).send(quests)
+        res.status(200).send(quests);
       } else {
         let pending = []; // to store pending answer promises
         quests.forEach(q => {
